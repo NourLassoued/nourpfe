@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 //1
  const http =require ('http');
-
+//4 
+reduire("dotenv").config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -40,4 +41,4 @@ app.use(function(err, req, res, next) {
 });
 
 const server=http.createServer(app);//2
-server.listen(5000,()=>{console.log('app is running io port :5000')});//3
+server.listen(process.env.Port,()=>{console.log('app is running io port :5000')});//3
