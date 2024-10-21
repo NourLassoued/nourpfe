@@ -3,13 +3,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//1
+//1cree le serveur 
  const http =require ('http');
+ //6
+ const {connectToMonogoDB}=require("./db/db.js");
 //4 
-reduire("dotenv").config();
+require("dotenv").config();
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+var usersRouter = require('./routes/userRouter.js');
+var orderRouter = require('./routes/orderRouter.js');
+var orderitemRouter = require('./routes/orderitemRouter.js');
 var app = express();
 
 
@@ -22,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/orders', orderRouter);
+app.use('/ordersitem', orderitemRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,6 +44,5 @@ app.use(function(err, req, res, next) {
  res.render('error');
 
 });
-
-const server=http.createServer(app);//2
-server.listen(process.env.Port,()=>{console.log('app is running io port :5000')});//3
+const server = http.createServer(app); //2
+server.listen(process.env.Port,() => {connectToMonogoDB(),console.log('app is running in port: 5000')});
