@@ -7,7 +7,8 @@ const orderschema = new mongoose.Schema({
     status: { type: String, enum: ['pending', 'shipped', 'delivered', 'canceled'], default: 'pending' // Statut de la commande
 },
 userorderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Référence à l'utilisateur
-orderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'OrderItem' }] // Référence aux éléments de commande
+orderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'OrderItem' }] ,// Référence aux éléments de commande
+delivery: { type: mongoose.Schema.Types.ObjectId, ref: 'Delivery' } // Relation with Delivery
 }, { timestamps: true });
 
 const Order = mongoose.model('Order', orderschema);

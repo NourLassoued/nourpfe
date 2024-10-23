@@ -2,11 +2,23 @@ const { json } = require("express");
 
 const OrderItem = require('../models/orderItemschema');
 const Order = require('../models/ordershema');
+const Product=require('../models/productschema');
 
 
 module.exports.createOrderItem = async (req, res) => {
     try {
         const { productId, quantity, price, orderId } = req.body;
+
+        // Vérifier si le produit existe
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Vérifier si la quantité demandée est disponible
+        if (product.stock < quantity) {
+            return res.status(400).json({ message: 'Insufficient stock for this product' });
+        }
 
         // Créer un nouvel élément de commande
         const newOrderItem = new OrderItem({
@@ -19,7 +31,7 @@ module.exports.createOrderItem = async (req, res) => {
         // Sauvegarder l'élément de commande
         const savedOrderItem = await newOrderItem.save();
 
-        // Ajouter l'élément de commande à la commande existante
+        // Mettre à jour la commande existante
         const order = await Order.findById(orderId);
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
@@ -28,6 +40,10 @@ module.exports.createOrderItem = async (req, res) => {
         order.orderItems.push(savedOrderItem._id); // Ajouter l'élément à la commande
         order.totalPrice += quantity * price; // Mettre à jour le prix total de la commande
         await order.save(); // Sauvegarder la commande mise à jour
+
+        // Mettre à jour le stock du produit
+        product.stock -= quantity; // Réduire le stock
+        await product.save(); // Sauvegarder le produit avec le stock mis à jour
 
         res.status(201).json(savedOrderItem); // Renvoie l'élément créé
     } catch (error) {

@@ -91,13 +91,15 @@ module.exports.updateUser = async (req, res) => {
             res.status(500).json({ message: error.message });
         }
         }
+
+
         module.exports.addUserWithImg = async (req, res) => {
           try {
-            const { filename } = req.file; //zyeda 1
-            const { email, password, nom, prenom } = req.body;    //njibo data user
+            const { filename } = req.file; 
+            const { email, password, nom, prenom } = req.body;    
             console.log(req.body.password);     
             const user = new userModel({ email, password, nom, prenom , image_User : filename });   //zyeda 2 image_User : filename
-            const useradded = await user.save();                              //save user
+            const useradded = await user.save();                            
             res.status(200).json({ useradded });
           } catch (error) {
             res.status(500).json({ message: error.message });

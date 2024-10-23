@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     premon:String,
     age:Number,
     adress:String,
-    image_User:String,
+    image_User : String,
     
     createdAt :Date,
 //   image_User : {type : String , required: true , Default:"client.png"}
