@@ -16,7 +16,7 @@ router.delete('/deleteUserByID/:id',userController.deleteUserByID);
 router.post('/addUser',userController.addUser);
 
 router.post('/confirmPassword',userController.confirmPassword);
-//router.post('/addUserWithImg', uploadFile.single("image_User"), userController.addUserWithImg);
+router.post('/addUserWithImg', uploadFile.single("image_User"),userController.addUserWithImg);
 router.put('/updateUser/:id',userController.updateUser);
 //router.get('/getUserById/:id',userController.getUserById);
 
